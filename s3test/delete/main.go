@@ -29,12 +29,8 @@ func main() {
 	svc := s3.New(sess)
 
 	_, err = svc.DeleteObject(&s3.DeleteObjectInput{Bucket: aws.String(dlBucketName), Key: aws.String(dlObjectKey)})
-
-	err = svc.WaitUntilObjectNotExists(&s3.HeadObjectInput{
-		Bucket: aws.String(dlBucketName),
-		Key:    aws.String(dlObjectKey),
-	})
 	if err != nil {
 		log.Println(err)
 	}
+	log.Println("file deleted")
 }
