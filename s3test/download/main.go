@@ -36,6 +36,10 @@ func main() {
 		log.Fatal(err)
 	}
 
+	ctype := *obj.ContentType
+	date := obj.LastModified
+	log.Printf("content type: %s, last modified: %v", ctype, date)
+
 	// read download file only 10 bytes
 	rc := obj.Body
 	defer rc.Close()

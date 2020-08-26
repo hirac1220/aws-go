@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -18,6 +19,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 	upBucketName := os.Getenv("UP_BUCKET")
+	searchString := os.Getenv("STR")
 
 	// Create session
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
@@ -34,10 +36,12 @@ func main() {
 	}
 
 	for _, item := range resp.Contents {
-		fmt.Println("Name:         ", *item.Key)
-		fmt.Println("Last modified:", *item.LastModified)
-		fmt.Println("Size:         ", *item.Size)
-		fmt.Println("Storage class:", *item.StorageClass)
-		fmt.Println("")
+		if strings.Index(*item.Key, searchString) != -1 {
+			fmt.Println("Name:         ", *item.Key)
+			fmt.Println("Last modified:", *item.LastModified)
+			fmt.Println("Size:         ", *item.Size)
+			fmt.Println("Storage class:", *item.StorageClass)
+			fmt.Println("")
+		}
 	}
 }
